@@ -1,5 +1,6 @@
 import { fireEvent ,render, screen } from "@testing-library/react";
 import { Button } from '.';
+import userEvent from '@testing-library/user-event';
 
 describe('<Button />', () => {
     it('should render the button with the text "Load more"', () => {
@@ -8,17 +9,34 @@ describe('<Button />', () => {
 
         const button = screen.getByRole('button', {name: /load more/i}); 
         expect(button).toHaveAttribute('class', 'button');
-    })
+    });
+
     it('should call function on button click', () => {
         const fn = jest.fn();
         render(<Button text="Load more" onClick={fn} />);
 
-        const button = screen.getByRole('button', {name: /load more/i}); 
-        fireEvent.click(button); //executa o evento de click no botao
-        expect(fn).toHaveBeenCalledTimes(1)
-    })
+        const button = screen.getByRole('button', {name: /load more/i} ); 
+        
+        userEvent.click(button) //permite fazer uma checagem mais natural
+        expect(fn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should be desabled when desabled is true', () => {
+        render(<Button text="Load more" disabled={true} />);
+
+        const button = screen.getByRole('button', {name: /load more/i} ); 
+        expect(button).toBeDisabled();
+    });
+
+    it('should be enabled when desabled is true', () => {
+        render(<Button text="Load more" disabled={false} />);
+
+        const button = screen.getByRole('button', {name: /load more/i} ); 
+        expect(button).toBeEnabled();
+    });
 });
 
+//fireEvent.click(button); executa o evento de click no botao
 // screen utilizado para pegar o botao
 // query nao levanta o erro se nao encontrar
 // get utilizamos para quando sabemos que o elemento esta na tela
