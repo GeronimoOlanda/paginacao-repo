@@ -8,9 +8,9 @@ const mock = {
     cover: 'img/img.png'
 };
 
-describe(<PostCard />, () => {
+describe('<PostCard />', () => {
     it('should render PostCard correctly', () => {
-        const {debug} =  render('<PostCard/>');
+        const {debug} =  render(<PostCard {...mock} />);
         debug();
     });
 });
