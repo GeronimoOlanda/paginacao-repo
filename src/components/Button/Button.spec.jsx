@@ -34,6 +34,13 @@ describe('<Button />', () => {
         const button = screen.getByRole('button', {name: /load more/i} ); 
         expect(button).toBeEnabled();
     });
+
+    it('shoulds call function on button click', () => {
+        const fn = jest.fn();
+        const { container } = render(<Button text="Load more" disabled={false} onClick={fn} />);
+        expect(container.firstChild).toMatchSnapshot(); 
+    });
+
 });
 
 //fireEvent.click(button); executa o evento de click no botao
