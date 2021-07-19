@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PostCard }  from '.';
 import { postCardPropsMock } from './mock';
 
@@ -6,8 +6,11 @@ const props = postCardPropsMock;
 
 describe('<PostCard />', () => {
     it('should render PostCard correctly', () => {
-        const {debug} =  render(<PostCard {...props} />);
-        debug();
+        render(<PostCard {...props} />);
+
+        expect(screen.getByRole('img', {name: /title1/i})).toHaveAttribute('src', 'img/img.png');
+        expect(screen.getByRole('heading', {name: /title1/i})).toBeInTheDocument();
+        expect(screen.getByText('body1')).toBeInTheDocument();
 
     });
 });
