@@ -36,10 +36,19 @@ describe('<Posts />', () => {
       expect(screen.getByRole('img', {name: /title3/i})).toHaveAttribute('src', 'img/img3.png');
     
     });
+    // testando se Posts esta vazia
+    it('should no render posts', () => {
+        render(<Posts />)
+        expect(screen.queryByRole('heading', {name: /title/i})).not.toBeInTheDocument();  
 
+    });
+
+    // tirando snapshot de Posts
     it('should match snapshot', () => {
         const {container} = render(<Posts {...props} />)
         
         expect(container.firstChild).toMatchSnapshot();
-      });
+    });
+
+
 });
