@@ -39,8 +39,6 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log('jesus');
-
     handleLoadPosts(0, postPerPage);
   }, [handleLoadPosts, page, postPerPage]);
 
