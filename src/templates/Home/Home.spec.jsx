@@ -1,5 +1,11 @@
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { Home } from '.';
 describe('<Home />', () => {
-  it('is a dummy test', () => {
-    expect(1).toBe(1);
+  it('shoud render search, posts and load more', async () => {
+    render(<Home />);
+    const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
+    await waitForElementToBeRemoved(noMorePosts);
+
+    screen.debug();
   });
 });
