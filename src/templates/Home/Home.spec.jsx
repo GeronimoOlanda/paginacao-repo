@@ -7,7 +7,7 @@ import { Home } from '.';
 // primeiro parametro pega a url e testa, e o segundo é o resolver, o que faremos quando a url for chamada
 const handlers = [
   rest.get('https://jsonplaceholder.typicode.com/posts', async (req, res, ctx) => {
-    console.log('A chamada foi interceptada');
+    console.log('A chamada foi interceptada de posts');
     // setando alguns dados como resposta no momento que a URL é chamada
     return res(
       ctx.json([
@@ -28,6 +28,24 @@ const handlers = [
           id: 3,
           title: 'title 3',
           body: 'body3',
+        },
+      ]),
+    );
+  }),
+
+  rest.get('https://jsonplaceholder.typicode.com/photos', async (req, res, ctx) => {
+    console.log('A chamada foi interceptada de photo');
+    // setando alguns dados como resposta no momento que a URL é chamada
+    return res(
+      ctx.json([
+        {
+          url: 'img/img1.png',
+        },
+        {
+          url: 'img/img2.png',
+        },
+        {
+          url: 'img/img3.png',
         },
       ]),
     );
