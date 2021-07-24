@@ -71,5 +71,8 @@ describe('<Home />', () => {
 
     const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
     expect(search).toBeInTheDocument();
+
+    const image = screen.getAllByRole('img', { name: /title/i });
+    expect(image).toHaveLength(2);
   });
 });
