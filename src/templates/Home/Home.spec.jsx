@@ -73,6 +73,9 @@ describe('<Home />', () => {
     expect(search).toBeInTheDocument();
 
     const image = screen.getAllByRole('img', { name: /title/i });
-    expect(image).toHaveLength(2);
+    expect(image).toHaveLength(3);
+
+    const button = screen.getByRole('button', { name: /load more Posts/i });
+    expect(button).toBeInTheDocument();
   });
 });
