@@ -63,10 +63,13 @@ describe('<Home />', () => {
   afterAll(() => {
     server.close(); // depois que acabar os testes, desliga o servidor
   });
-
+  //expect.assertions(1);
   it('shoud render search, posts and load more', async () => {
     render(<Home />);
     const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
     await waitForElementToBeRemoved(noMorePosts);
+
+    const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
+    expect(search).toBeInTheDocument();
   });
 });
