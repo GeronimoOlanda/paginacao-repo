@@ -64,13 +64,11 @@ describe('<Home />', () => {
     server.close(); // depois que acabar os testes, desliga o servidor
   });
 
-  expect.assertions(3);
-
   it('shoud render search, posts and load more', async () => {
     render(<Home />);
     const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
     await waitForElementToBeRemoved(noMorePosts);
-
+    expect.assertions(3);
     const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
     expect(search).toBeInTheDocument();
 
@@ -79,5 +77,15 @@ describe('<Home />', () => {
 
     const button = screen.getByRole('button', { name: /load more Posts/i });
     expect(button).toBeInTheDocument();
+  });
+  // testando buscas por posts
+  it('shoud search for posts', async () => {
+    render(<Home />);
+    const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
+    await waitForElementToBeRemoved(noMorePosts);
+    //expect.assertions(3);
+    const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
+    expect(screen.getByRole('heading', { name: 'title 1 1' }));
+    expect(screen.getByRole('heading', { name: 'title 2 2' }));
   });
 });
