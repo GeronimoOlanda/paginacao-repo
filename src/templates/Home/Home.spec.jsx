@@ -90,9 +90,8 @@ describe('<Home />', () => {
     expect(screen.getByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
 
-    userEvent.type(search, 'title1');
-    expect(screen.queryByRole('heading', { name: 'title 1 1' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'title 2 2' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
+    userEvent.clear(search);
+    expect(screen.queryByRole('heading', { name: 'title 1 1' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
   });
 });
