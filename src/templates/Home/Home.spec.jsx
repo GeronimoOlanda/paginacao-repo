@@ -63,7 +63,9 @@ describe('<Home />', () => {
   afterAll(() => {
     server.close(); // depois que acabar os testes, desliga o servidor
   });
-  //expect.assertions(1);
+
+  expect.assertions(3);
+
   it('shoud render search, posts and load more', async () => {
     render(<Home />);
     const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
