@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Home } from '.';
 
 // para cada url podemos interceptar e testar aqui mesmo
@@ -87,6 +88,11 @@ describe('<Home />', () => {
     const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
     expect(screen.getByRole('heading', { name: 'title 1 1' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
+
+    userEvent.type(search, 'title1');
+    expect(screen.queryByRole('heading', { name: 'title 1 1' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title 2 2' })).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
   });
 });
