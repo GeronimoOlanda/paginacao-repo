@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { Home } from '.';
 
 // para cada url podemos interceptar e testar aqui mesmo
@@ -79,6 +79,7 @@ describe('<Home />', () => {
     const button = screen.getByRole('button', { name: /load more Posts/i });
     expect(button).toBeInTheDocument();
   });
+
   // testando buscas por posts
   it('shoud search for posts', async () => {
     render(<Home />);
@@ -96,5 +97,17 @@ describe('<Home />', () => {
 
     userEvent.type(search, 'blablla');
     expect(screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...'));
+  });
+
+  it('shoud load more posts when click', async () => {
+    render(<Home />);
+    const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
+    await waitForElementToBeRemoved(noMorePosts);
+
+    const button = screen.getByRole('button', { name: /load more Posts/i });
+
+    userEvent.click(button);
+    expect(screen.getByRole('heading', { name: 'title 3 3' })).toBeInTheDocument();
+    expect(button).toBeDisabled();
   });
 });
