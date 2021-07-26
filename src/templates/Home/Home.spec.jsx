@@ -85,7 +85,8 @@ describe('<Home />', () => {
     await waitForElementToBeRemoved(noMorePosts);
     //expect.assertions(3);
     const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
-    expect(screen.getByRole('heading', { name: 'title 1 1' }));
-    expect(screen.getByRole('heading', { name: 'title 2 2' }));
+    expect(screen.getByRole('heading', { name: 'title 1 1' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
   });
 });
