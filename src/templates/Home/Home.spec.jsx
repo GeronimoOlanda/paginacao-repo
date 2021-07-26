@@ -84,7 +84,7 @@ describe('<Home />', () => {
     render(<Home />);
     const noMorePosts = screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...');
     await waitForElementToBeRemoved(noMorePosts);
-    //expect.assertions(3);
+    expect.assertions(5);
     const search = screen.getByPlaceholderText(/Digite a sua pesquisa/i);
     expect(screen.getByRole('heading', { name: 'title 1 1' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
@@ -93,5 +93,8 @@ describe('<Home />', () => {
     userEvent.clear(search);
     expect(screen.queryByRole('heading', { name: 'title 1 1' })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'title 2 2' })).toBeInTheDocument();
+
+    userEvent.type(search, 'blablla');
+    expect(screen.getByText('Desculpe mermao, mas o que esta procurano nao esta aqui...'));
   });
 });
