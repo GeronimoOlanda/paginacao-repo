@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+const isObjectEqual = (objA, objB) => {
+  return JSON.stringify(objA) === JSON.stringify(objB);
+};
+
 const useFetch = (url, options) => {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState();
@@ -10,8 +14,17 @@ const useFetch = (url, options) => {
   const optionsRef = useRef(options);
 
   useEffect(() => {
-    if (url !== urlRef.current) {
+    let changed = false;
+    if (!isObjectEqual(url, urlRef.current)) {
       urlRef.current = url;
+      changed = true;
+    }
+
+    if (!isObjectEqual(options, optionsRef.current)) {
+      optionsRef.current = options;
+      changed = true;
+    }
+    if (changed) {
       setShouldLoad((s) => !s);
     }
   }, [url, options]);
@@ -22,7 +35,7 @@ const useFetch = (url, options) => {
     setLoading(true);
     const fetchData = async () => {
       // por a funcao ser assincrona, devemos chamar o setTimeout dentro de uma promise
-      await new Promise((r) => setTimeout(r, 3000));
+      await new Promise((r) => setTimeout(r, 1000));
 
       try {
         const response = await fetch(urlRef.current, optionsRef.current);
@@ -44,7 +57,7 @@ export const Home = () => {
   const [postId, setPostId] = useState('');
   const [result, loading] = useFetch('https://jsonplaceholder.typicode.com/posts/' + postId, {
     headers: {
-      abc: '301',
+      abc: '3101' + postId,
     },
   });
   useEffect(() => {
