@@ -1,5 +1,3 @@
-/* eslint-desable */
-
 //primeiro paramtro da funcao vai ser sempre uma URL ou um OBJETO
 
 import { useEffect, useState } from 'react';
@@ -9,6 +7,7 @@ const useFetch = (url, options) => {
   const [loading, setLoading] = useState();
 
   useEffect(() => {
+    console.log('effect', new Date().toLocaleString());
     setLoading(true);
     const fetchData = async () => {
       // por a funcao ser assincrona, devemos chamar o setTimeout dentro de uma promise
@@ -24,12 +23,18 @@ const useFetch = (url, options) => {
         throw e;
       }
     };
-  }, [url]);
+    fetchData();
+  }, [url, options]);
 
-  return [1, 2];
+  return [result, loading];
 };
 export const Home = () => {
   const [result, loading] = useFetch('https://jsonplaceholder.typicode.com/posts');
-  console.log(result, loading);
+  if (loading) {
+    return <p>Loading... </p>;
+  }
+  if (!loading && result) {
+    console.log(result);
+  }
   return <h1>Oi</h1>;
 };
