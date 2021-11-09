@@ -11,6 +11,9 @@ const useFetch = (url, options) => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
+      // por a funcao ser assincrona, devemos chamar o setTimeout dentro de uma promise
+      await new Promise((r) => setTimeout(r, 3000));
+
       try {
         const response = await fetch(url, options);
         const jsonResult = await response.json();
