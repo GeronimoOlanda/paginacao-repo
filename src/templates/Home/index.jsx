@@ -1,42 +1,44 @@
-import { useEffect, useRef, useState } from 'react';
-import { useFetch } from './useFetch';
-export const Home = () => {
-  const [postId, setPostId] = useState('');
-  const [result, loading] = useFetch('https://jsonplaceholder.typicode.com/posts/' + postId, {
-    headers: {
-      abc: '3101' + postId,
-    },
-  });
+import { useState, useEffect, useCallback } from 'react';
+
+const useAsync = (asyncFnction, shouldRun) => {
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState('idle');
+
+  const run = useCallback(() => {
+    console.log('EFFECT', new Date().toLocaleString());
+    setResult(null);
+    setError(null);
+    setStatus('pending');
+
+    return asyncFnction()
+      .then((response) => {
+        setStatus('settled');
+        setResult(response);
+      })
+      .catch((error) => {
+        setStatus('error or rejected');
+        setError(error);
+      });
+  }, [asyncFnction]);
 
   useEffect(() => {
-    console.log('id do post', postId);
-  }, [postId]);
+    if (shouldRun) {
+      run();
+    }
+  }, [run, shouldRun]);
 
-  if (loading) {
-    return <p>Loading... </p>;
-  }
+  return [run, result, error, status];
+};
 
-  const handleClick = (id) => {
-    setPostId(id);
-  };
+const fetchData = async () => {
+  const data = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const json = await data.json();
+  return json;
+};
 
-  if (!loading && result) {
-    return (
-      <div>
-        {/*a primeira linha converte para objeto o result?.length */}
-        {result?.length > 0 ? (
-          result.map((p) => (
-            <div key={`post-${p.id}`} onClick={() => handleClick(p.id)}>
-              <p>{p.title}</p>
-            </div>
-          ))
-        ) : (
-          <div onClick={() => handleClick('')}>
-            <p>{result.title}</p>
-          </div>
-        )}
-      </div>
-    );
-  }
-  return <h1>Oi</h1>;
+export const Home = () => {
+  const [posts, setPosts] = useState(null);
+  const [reFetchData, result, error, status] = useAsync(fetchData, true);
+  return <pre>{JSON.stringify(result, null, 2)}</pre>;
 };
