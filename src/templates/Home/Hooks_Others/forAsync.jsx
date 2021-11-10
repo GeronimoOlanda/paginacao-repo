@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAsync } from './useAsync';
+import { useAsync } from '../useAsync';
 
 const fetchData = async () => {
   await new Promise((r) => setTimeout(r, 2000));
