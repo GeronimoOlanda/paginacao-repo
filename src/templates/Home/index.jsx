@@ -30,9 +30,11 @@ const useFetch = (url, options) => {
   }, [url, options]);
 
   useEffect(() => {
+    let wait = false;
     console.log('effect', new Date().toLocaleString());
     console.log(optionsRef.current.headers);
     setLoading(true);
+
     const fetchData = async () => {
       // por a funcao ser assincrona, devemos chamar o setTimeout dentro de uma promise
       await new Promise((r) => setTimeout(r, 1000));
@@ -40,14 +42,21 @@ const useFetch = (url, options) => {
       try {
         const response = await fetch(urlRef.current, optionsRef.current);
         const jsonResult = await response.json();
-        setResult(jsonResult);
-        setLoading(false);
+        if (!wait) {
+          setResult(jsonResult);
+          setLoading(false);
+        }
       } catch (e) {
-        setLoading(false);
+        if (!wait) {
+          setLoading(false);
+        }
         throw e;
       }
     };
     fetchData();
+    return () => {
+      wait = true;
+    };
   }, [shouldLoad]);
 
   return [result, loading];
@@ -60,15 +69,19 @@ export const Home = () => {
       abc: '3101' + postId,
     },
   });
+
   useEffect(() => {
     console.log('id do post', postId);
   }, [postId]);
+
   if (loading) {
     return <p>Loading... </p>;
   }
+
   const handleClick = (id) => {
     setPostId(id);
   };
+
   if (!loading && result) {
     return (
       <div>
